@@ -49,7 +49,7 @@ volumes:
   apache_data:
     driver: local
    php_data:
-    driver: local 
+    driver: local
 ```
 
 ### Run the application manually
@@ -59,13 +59,13 @@ If you want to run the application manually instead of using docker-compose, the
 1. Create a new network for the application and the database:
 
   ```bash
-  $ docker network create joomla_network
+  $ docker network create joomla-tier
   ```
 
 2. Start a MariaDB database in the network generated:
 
   ```bash
-  $ docker run -d --name mariadb --net=joomla_network bitnami/mariadb
+  $ docker run -d --name mariadb --net=joomla-tier bitnami/mariadb
   ```
 
   *Note:* You need to give the container a name in order to Joomla to resolve the host
@@ -73,7 +73,7 @@ If you want to run the application manually instead of using docker-compose, the
 3. Run the Joomla container:
 
   ```bash
-  $ docker run -d -p 80:80 --name joomla --net=joomla_network bitnami/joomla
+  $ docker run -d -p 80:80 --name joomla --net=joomla-tier bitnami/joomla
   ```
 
 Then you can access your application at http://your-ip/
@@ -99,7 +99,7 @@ services:
   mariadb:
     image: 'bitnami/mariadb:latest'
     volumes:
-      - '/path/to/your/local/mariadb_data:/bitnami/mariadb'
+      - /path/to/mariadb-persistence:/bitnami/mariadb
   joomla:
     image: 'bitnami/joomla:latest'
     depends_on:
@@ -111,7 +111,7 @@ services:
       - '/path/to/joomla-persistence:/bitnami/joomla'
       - '/path/to/apache-persistence:/bitnami/apache'
       - '/path/to/php-persistence:/bitnami/php'
-  
+
 ```
 
 ### Mount host directories as data volumes using the Docker command line
@@ -194,7 +194,7 @@ application:
  * For manual execution add a `-e` option with each variable and value:
 
 ```bash
- $ docker run -d -e JOOMLA_PASSWORD=my_password -p 80:80 --name joomla -v /your/local/path/bitnami/joomla:/bitnami/joomla --net=joomla_network bitnami/joomla
+ $ docker run -d -e JOOMLA_PASSWORD=my_password -p 80:80 --name joomla -v /your/local/path/bitnami/joomla:/bitnami/joomla --net=joomla-tier bitnami/joomla
 ```
 
 Available variables:
@@ -236,7 +236,7 @@ This would be an example of SMTP configuration using a GMail account:
  * For manual execution:
 
 ```bash
- $ docker run -d -e SMTP_HOST=smtp.gmail.com -e SMTP_PORT=587 -e SMTP_USER=your_email@gmail.com -e SMTP_PASSWORD=your_password -p 80:80 --name joomla -v /your/local/path/bitnami/joomla:/bitnami/joomla --net=joomla_network bitnami/joomla
+ $ docker run -d -e SMTP_HOST=smtp.gmail.com -e SMTP_PORT=587 -e SMTP_USER=your_email@gmail.com -e SMTP_PASSWORD=your_password -p 80:80 --name joomla -v /your/local/path/bitnami/joomla:/bitnami/joomla --net=joomla-tier bitnami/joomla
 ```
 
 # Backing up your application
